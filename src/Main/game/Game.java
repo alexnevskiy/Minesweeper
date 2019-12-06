@@ -25,7 +25,7 @@ public class Game {
     AnimationTimer timer;
 
     public static void create(Pane pane) {
-        board = new Board(100, 100, 10);
+        board = new Board(10, 10, 10);
         board.createBoard(pane);
     }
 

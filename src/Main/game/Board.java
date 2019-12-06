@@ -3,6 +3,7 @@ package Main.game;
 import Main.game.exceptions.GameLoseException;
 import Main.game.exceptions.GameWinException;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -83,46 +84,62 @@ public class Board {
                     int value = board[i][j].getValue();
                     switch (value) {
                         case 0:
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black;");
                             break;
                         case 1:
                             label.setText("1");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: blue;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 2:
                             label.setText("2");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: green;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 3:
                             label.setText("3");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: red;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 4:
                             label.setText("4");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: navy;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 5:
                             label.setText("5");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: maroon;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 6:
                             label.setText("6");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: aqua;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 7:
                             label.setText("7");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: fuchsia;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                         case 8:
                             label.setText("8");
-                            label.setBackground(new Background(new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                            label.setAlignment(Pos.CENTER);
+                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: black;" +
+                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
                             break;
                     }
                 } else {
                     if (board[i][j].isFlag()) {
-                        label.setBackground(new Background(new BackgroundFill(BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+                        label.setStyle("-fx-background-color: blue; -fx-border-color: black;");
                     } else {
-                        label.setBackground(new Background(new BackgroundFill(GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+                        label.setStyle("-fx-background-color: gray; -fx-border-color: black;");
                     }
                 }
                 label.setMinHeight(30);
@@ -136,7 +153,7 @@ public class Board {
         if (endGame) {
             for (Cell mine : minesList) {
                 Label label = new Label();
-                label.setBackground(new Background(new BackgroundFill(RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                label.setStyle("-fx-background-color: red; -fx-border-color: black;");
                 label.setMinHeight(30);
                 label.setMinWidth(30);
                 label.setTranslateX(mine.getY() * 30);
@@ -146,7 +163,7 @@ public class Board {
         }
     }
 
-   public void uncover(int x, int y) throws GameLoseException, GameWinException {
+    public void uncover(int x, int y) throws GameLoseException, GameWinException {
         if (!board[y][x].check) {
             board[y][x].check = true;
             if (board[y][x].isMine()) {
@@ -170,5 +187,5 @@ public class Board {
             endGame = true;
             throw new GameWinException();
         }
-   }
+    }
 }
