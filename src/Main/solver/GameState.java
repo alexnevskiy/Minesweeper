@@ -1,4 +1,6 @@
-package Main.game;
+package Main.solver;
+
+import Main.game.Main;
 
 public enum GameState {
     launching,
