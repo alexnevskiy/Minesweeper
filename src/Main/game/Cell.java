@@ -5,6 +5,7 @@ public class Cell {
     private int y;
     private int value = 0;
     private boolean mine = false;
+    private boolean flag = false;
     public boolean check = false;
 
     public Cell(int y, int x) {
@@ -16,9 +17,17 @@ public class Cell {
         return mine;
     }
 
-    public void placeMine(boolean place) {
-        mine = place;
+    public void placeMine() {
+        mine = true;
         value = -1;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void placeFlag() {
+        flag = true;
     }
 
     public void setValue(int val) {
