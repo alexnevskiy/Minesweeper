@@ -21,6 +21,7 @@ public class Main extends Application {
     Button restartButton;
     Button menuButton;
     Button endButton;
+    Button stepButton;
 
     public static Stage window = new Stage();
 
@@ -61,12 +62,14 @@ public class Main extends Application {
         restartButton = new Button("Начать заново");
         menuButton = new Button("В главное меню");
         endButton = new Button("Выйти в главное меню");
+        stepButton = new Button("Следующий шаг");
 
         playButton.setStyle(buttonStyle);
         exitButton.setStyle(buttonStyle);
         restartButton.setStyle(buttonStyle);
         menuButton.setStyle(buttonStyle);
         endButton.setStyle(buttonStyle);
+        stepButton.setStyle(buttonStyle);
 
         primaryStage.setOnCloseRequest(e -> System.exit(0));  //  Закрывается окно при нажатии на крестик
 
@@ -75,6 +78,7 @@ public class Main extends Application {
         StackPane.setMargin(restartButton, new Insets(0, 0, 150, 0));
         StackPane.setMargin(menuButton, new Insets(0, 0, -150, 0));
         StackPane.setMargin(endButton, new Insets(0, 0, 0, 0));
+        StackPane.setMargin(stepButton, new Insets(0, -800, 300, 0));
 
         Image background = new Image(new FileInputStream("./images/BackgroundMenu.jpg"), 1280.0, 720.0, true, true);
         Image backgroundGame = new Image(new FileInputStream("./images/BackgroundGame.jpg"));
@@ -87,7 +91,9 @@ public class Main extends Application {
         primaryStage.show();
 
         playButton.setOnAction(e -> {
-            gameLayout = new Pane();
+            stepButton.setLayoutX(500.0);
+            stepButton.setLayoutY(100.0);
+            gameLayout = new Pane(stepButton);
             window.setScene(gameScene = new Scene(gameLayout, 1280, 720));
             Game game = new Game();
             game.start();
@@ -106,5 +112,6 @@ public class Main extends Application {
         });
         menuButton.setOnAction(e -> window.setScene(mainScene));
         endButton.setOnAction(e -> window.setScene(mainScene));
+        stepButton.setOnAction(e -> window.setScene(mainScene));
     }
 }

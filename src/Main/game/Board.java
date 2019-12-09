@@ -36,12 +36,12 @@ public class Board {
     }
 
     private void generateBoard(int width, int height, int mines) {
-        board = new Cell[width][height];
+        board = new Cell[height][width];
         if (mines > width * height) throw new IllegalArgumentException("Слишком много мин для данного поля");
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                board[i][j] = new Cell(i, j);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                board[i][j] = new Cell(j, i);
             }
         }
 
@@ -54,6 +54,37 @@ public class Board {
             }
             else i--;
         }
+
+//        board[0][0].placeMine();
+//        minesList.add(board[0][0]);
+//
+//        board[1][4].placeMine();
+//        minesList.add(board[1][4]);
+//
+//        board[5][6].placeMine();
+//        minesList.add(board[5][6]);
+//
+//        board[5][7].placeMine();
+//        minesList.add(board[5][7]);
+//
+//        board[8][8].placeMine();
+//        minesList.add(board[8][8]);
+//
+//        board[3][6].placeMine();
+//        minesList.add(board[3][6]);
+//
+//        board[0][7].placeMine();
+//        minesList.add(board[0][7]);
+//
+//        board[1][7].placeMine();
+//        minesList.add(board[1][7]);
+//
+//        board[2][8].placeMine();
+//        minesList.add(board[2][8]);
+//
+//        board[5][5].placeMine();
+//        minesList.add(board[5][5]);
+
         updateValues();
     }
 
@@ -77,8 +108,8 @@ public class Board {
     }
 
     public void createBoard(Pane pane) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 Label label = new Label();
                 if (board[i][j].check && !board[i][j].isFlag()) {
                     int value = board[i][j].getValue();
@@ -144,8 +175,8 @@ public class Board {
                 }
                 label.setMinHeight(30);
                 label.setMinWidth(30);
-                label.setTranslateX(i * 30);
-                label.setTranslateY(j * 30);
+                label.setTranslateX(j * 30);
+                label.setTranslateY(i * 30);
                 labels.put(board[i][j], label);
                 pane.getChildren().addAll(label);
             }
@@ -153,11 +184,15 @@ public class Board {
         if (endGame) {
             for (Cell mine : minesList) {
                 Label label = new Label();
-                label.setStyle("-fx-background-color: red; -fx-border-color: black;");
+                if (mine.isFlag()) {
+                    label.setStyle("-fx-background-color: purple; -fx-border-color: black;");
+                } else {
+                    label.setStyle("-fx-background-color: red; -fx-border-color: black;");
+                }
                 label.setMinHeight(30);
                 label.setMinWidth(30);
-                label.setTranslateX(mine.getY() * 30);
-                label.setTranslateY(mine.getX() * 30);
+                label.setTranslateX(mine.getX() * 30);
+                label.setTranslateY(mine.getY() * 30);
                 pane.getChildren().addAll(label);
             }
         }
@@ -187,5 +222,19 @@ public class Board {
             endGame = true;
             throw new GameWinException();
         }
+    }
+
+    public int[][] getBoard() {
+        int[][] gettingBoard = new int[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j].check) {
+                    gettingBoard[i][j] = board[i][j].getValue();
+                } else {
+                    gettingBoard[i][j] = -1;
+                }
+            }
+        }
+        return gettingBoard;
     }
 }
