@@ -5,21 +5,12 @@ import Main.game.exceptions.GameWinException;
 import Main.solver.GameState;
 import Main.solver.Solver;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 
 import java.util.Map;
-
-import static javafx.scene.paint.Color.BLUE;
-import static javafx.scene.paint.Color.GRAY;
 
 public class Game {
 
@@ -43,14 +34,18 @@ public class Game {
                 if (solve) {
                     if (!solver.board.endGame) {
                         try {
-                            //solver.play();
-                            solver.stepPlay();
+                            solver.play();
+                            //solver.stepPlay();
                         } catch (GameLoseException e) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Вы проиграли");
-                            alert.setHeaderText("Вы попались на мину");
-                            alert.show();
-                            solver.state = GameState.lose;
+                            if (solver.moveCounter == 0) {
+                                solver = new Solver(20, 20, 50);
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Вы проиграли");
+                                alert.setHeaderText("Вы попались на мину");
+                                alert.show();
+                                solver.state = GameState.lose;
+                            }
                         } catch (GameWinException e) {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Вы выиграли");

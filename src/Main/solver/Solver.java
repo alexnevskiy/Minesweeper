@@ -12,7 +12,7 @@ public class Solver {
     public Board board;
     public int width;
     public int height;
-    private int moveCounter;
+    public int moveCounter;
     private int failedMove;
     public List<Cell> checkCells;
     public GameState state;
@@ -39,7 +39,7 @@ public class Solver {
         }
         Cell cell = bestMove();
         System.out.println("Сейчас решатель на координатах x: " + cell.getX() + ", y: " + cell.getY());
-        if (failedMove > 5) {
+        if (failedMove > 2) {
             while (!randomMove()) {
                 failedMove = 0;
             }
