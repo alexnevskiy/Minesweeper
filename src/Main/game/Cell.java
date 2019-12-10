@@ -25,6 +25,7 @@ public class Cell {
     public void removeMine() {
         mine = false;
         value = 0;
+        check = false;
     }
 
     public boolean isFlag() {

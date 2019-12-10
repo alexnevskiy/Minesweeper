@@ -132,8 +132,4 @@ public class ChanceBoard {
         surrounding[7] = new SolverCell(x, -1 + y, false);  //  Слева
         return surrounding;
     }
-
-    public SolverCell getSolverCell(int x, int y) {
-        return chanceBoard[x][y];
-    }
 }

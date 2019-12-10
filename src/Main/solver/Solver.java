@@ -2,7 +2,6 @@ package Main.solver;
 
 import Main.game.Board;
 import Main.game.Cell;
-import Main.game.Game;
 import Main.game.exceptions.GameLoseException;
 import Main.game.exceptions.GameWinException;
 
@@ -14,7 +13,6 @@ public class Solver {
     public int height;
     public int moveCounter;
     private int failedMove;
-    public List<Cell> checkCells;
     public GameState state;
     public ChanceBoard chanceBoard;
 
@@ -65,7 +63,7 @@ public class Solver {
         return cell;
     }
 
-    public boolean move(int x, int y) throws GameLoseException, GameWinException {
+    public boolean move(int x, int y) throws GameWinException, GameLoseException {
         if (board.board[y][x].check || board.board[y][x].isFlag()) {
             return false;
         }
@@ -75,6 +73,7 @@ public class Solver {
         } catch (GameLoseException e) {
             if (moveCounter == 0) {
                 board.board[y][x].removeMine();
+                board.minesList.remove(board.board[y][x]);
                 boolean isSetMine = false;
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < width; j++) {
@@ -86,14 +85,16 @@ public class Solver {
                         }
                     }
                     if (isSetMine) break;
-//                    int randomX = (int) (Math.random() * width);
-//                    int randomY = (int) (Math.random() * height);
-//                    if (!board.board[randomY][randomX].isMine() && randomX != x && randomY != y) {
-//                        board.board[randomY][randomX].placeMine();
-//                        board.minesList.add(board.board[randomY][randomX]);
-//                    } else i--;
                 }
                 board.updateValues();
+                board.uncover(x, y);
+                if (board.checkCells == board.emptyCells) {
+                    board.endGame = true;
+                    throw new GameWinException();
+                }
+            } else {
+                board.endGame = true;
+                throw new GameLoseException();
             }
         }
         list = chanceBoard.createChanceBoard(board.getBoard());

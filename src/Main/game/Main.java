@@ -24,7 +24,7 @@ public class Main extends Application {
     Button restartButton;
     Button menuButton;
     Button endButton;
-    Button stepButton;
+    Button returnButton;
 
     public static Stage window = new Stage();
 
@@ -57,6 +57,16 @@ public class Main extends Application {
             "    -fx-text-fill: #ffffff;" +
             "    -fx-font-size: 2.0em;";
 
+    String gameStyle = "    -fx-background-radius: 8;\n" +
+            "    -fx-background-color: \n" +
+            "        linear-gradient(from 0% 93% to 0% 100%, #000099 0%, #000099 100%),\n" +
+            "        #000099,\n" +
+            "        #000099,\n" +
+            "        radial-gradient(center 50% 50%, radius 100%, #000000, #0000ff);\n" +
+            "    -fx-font-weight: bold;\n" +
+            "    -fx-text-fill: #ffffff;" +
+            "    -fx-font-size: 1.0em;";
+
     public Main() {
     }
 
@@ -75,7 +85,7 @@ public class Main extends Application {
         restartButton = new Button("Начать заново");
         menuButton = new Button("В главное меню");
         endButton = new Button("Выйти в главное меню");
-        stepButton = new Button("Следующий шаг");
+        returnButton = new Button("Выйти");
 
         TextField width = new TextField();
         width.setMaxWidth(125);
@@ -90,10 +100,10 @@ public class Main extends Application {
 
         playButton.setStyle(buttonStyle);
         exitButton.setStyle(buttonStyle);
-        restartButton.setStyle(buttonStyle);
         menuButton.setStyle(buttonStyle);
         endButton.setStyle(buttonStyle);
-        stepButton.setStyle(buttonStyle);
+        restartButton.setStyle(gameStyle);
+        returnButton.setStyle(gameStyle);
         width.setStyle(buttonStyle);
         height.setStyle(buttonStyle);
         mines.setStyle(buttonStyle);
@@ -108,7 +118,7 @@ public class Main extends Application {
         StackPane.setMargin(restartButton, new Insets(0, 0, 150, 0));
         StackPane.setMargin(menuButton, new Insets(0, 0, -150, 0));
         StackPane.setMargin(endButton, new Insets(0, 0, 0, 0));
-        StackPane.setMargin(stepButton, new Insets(0, -800, 300, 0));
+        StackPane.setMargin(returnButton, new Insets(0, -800, 300, 0));
         StackPane.setMargin(width, new Insets(0, -800, 350, 0));
         StackPane.setMargin(height, new Insets(0, -800, 0, 0));
         StackPane.setMargin(mines, new Insets(350, -800, 0, 0));
@@ -137,10 +147,12 @@ public class Main extends Application {
                 alert.setHeaderText("Вы ввели неверные данные");
                 alert.showAndWait();
             } else {
-                stepButton.setLayoutX(500.0);
-                stepButton.setLayoutY(100.0);
-                gameLayout = new Pane(stepButton);
-                window.setScene(gameScene = new Scene(gameLayout, 1280, 720));
+                returnButton.setLayoutX(0);
+                returnButton.setLayoutY(heightNumber * 30);
+                restartButton.setLayoutX(widthNumber * 30 - 102);
+                restartButton.setLayoutY(heightNumber * 30);
+                gameLayout = new Pane(returnButton, restartButton);
+                window.setScene(gameScene = new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
                 Game game = new Game();
                 game.start(widthNumber, heightNumber, minesNumber);
             }
@@ -148,17 +160,20 @@ public class Main extends Application {
 
         exitButton.setOnAction(e -> window.close());
         restartButton.setOnAction(e -> {
-            gameLayout = new Pane(backgroundGameView);
-            window.setScene(gameScene = new Scene(gameLayout, 1280, 720));
-//            Game game = new Game();
-//            try {
-//                game.start();
-//            } catch (FileNotFoundException ex) {
-//                ex.printStackTrace();
-//            }
+            int widthNumber = Integer.parseInt(width.getText());
+            int heightNumber = Integer.parseInt(height.getText());
+            int minesNumber = Integer.parseInt(mines.getText());
+            returnButton.setLayoutX(0);
+            returnButton.setLayoutY(heightNumber * 30);
+            restartButton.setLayoutX(widthNumber * 30 - 102);
+            restartButton.setLayoutY(heightNumber * 30);
+            gameLayout = new Pane(returnButton, restartButton);
+            window.setScene(gameScene = new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
+            Game game = new Game();
+            game.start(widthNumber, heightNumber, minesNumber);
         });
         menuButton.setOnAction(e -> window.setScene(mainScene));
         endButton.setOnAction(e -> window.setScene(mainScene));
-        stepButton.setOnAction(e -> window.setScene(mainScene));
+        returnButton.setOnAction(e -> window.setScene(mainScene));
     }
 }
