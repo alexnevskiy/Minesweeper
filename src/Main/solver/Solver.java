@@ -70,7 +70,32 @@ public class Solver {
             return false;
         }
         List<Cell> list;
-        board.uncover(x, y);
+        try {
+            board.uncover(x, y);
+        } catch (GameLoseException e) {
+            if (moveCounter == 0) {
+                board.board[y][x].removeMine();
+                boolean isSetMine = false;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        if (!board.board[i][j].isMine() && (j != x || i != y)) {
+                            board.board[i][j].placeMine();
+                            board.minesList.add(board.board[i][j]);
+                            isSetMine = true;
+                            break;
+                        }
+                    }
+                    if (isSetMine) break;
+//                    int randomX = (int) (Math.random() * width);
+//                    int randomY = (int) (Math.random() * height);
+//                    if (!board.board[randomY][randomX].isMine() && randomX != x && randomY != y) {
+//                        board.board[randomY][randomX].placeMine();
+//                        board.minesList.add(board.board[randomY][randomX]);
+//                    } else i--;
+                }
+                board.updateValues();
+            }
+        }
         list = chanceBoard.createChanceBoard(board.getBoard());
         for (Cell cell : list) {
             board.board[cell.getY()][cell.getX()].placeFlag();

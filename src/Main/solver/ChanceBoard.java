@@ -11,13 +11,13 @@ public class ChanceBoard {
     int height;
 
     public ChanceBoard(int[][] board) {
-        width = board.length;
-        height = board[0].length;
+        height = board.length;
+        width = board[0].length;
         createChanceBoard(board);
     }
 
     public List<Cell> createChanceBoard(int[][] board) {
-        SolverCell[][] result = new SolverCell[width][height];
+        SolverCell[][] result = new SolverCell[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (board[i][j] == -1) {

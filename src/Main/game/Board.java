@@ -23,7 +23,7 @@ public class Board {
     public int height;
     public int emptyCells;
     public int checkCells;
-    private List<Cell> minesList = new ArrayList<>();
+    public List<Cell> minesList = new ArrayList<>();
     public Map<Cell, Label> labels = new HashMap<>();
     public boolean endGame = false;
 
@@ -48,9 +48,9 @@ public class Board {
         for (int i = 0; i < mines; i++) {
             int randomX = (int) (Math.random() * width);
             int randomY = (int) (Math.random() * height);
-            if (!board[randomX][randomY].isMine()) {
-                board[randomX][randomY].placeMine();
-                minesList.add(board[randomX][randomY]);
+            if (!board[randomY][randomX].isMine()) {
+                board[randomY][randomX].placeMine();
+                minesList.add(board[randomY][randomX]);
             }
             else i--;
         }
@@ -88,7 +88,7 @@ public class Board {
         updateValues();
     }
 
-    private void updateValues() {
+    public void updateValues() {
         for (Cell[] row : board) {
             for (Cell cell : row) {
                 if (cell.isMine()) {

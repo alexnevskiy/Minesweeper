@@ -22,6 +22,11 @@ public class Cell {
         value = -1;
     }
 
+    public void removeMine() {
+        mine = false;
+        value = 0;
+    }
+
     public boolean isFlag() {
         return flag;
     }

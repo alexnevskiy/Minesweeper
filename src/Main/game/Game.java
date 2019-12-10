@@ -19,14 +19,14 @@ public class Game {
     public boolean solve = true;
     AnimationTimer timer;
 
-    public static void create(Pane pane) {
-        board = new Board(10, 10, 10);
+    public static void create(Pane pane, int width, int height, int mines) {
+        board = new Board(width, height, mines);
         board.createBoard(pane);
     }
 
-    public void start(){
+    public void start(int width, int height, int mines){
         //create(Main.gameLayout);
-        solver = new Solver(20, 20, 50);
+        solver = new Solver(width, height, mines);
 
         timer = new AnimationTimer() {
             @Override
@@ -38,7 +38,7 @@ public class Game {
                             //solver.stepPlay();
                         } catch (GameLoseException e) {
                             if (solver.moveCounter == 0) {
-                                solver = new Solver(20, 20, 50);
+                                solver = new Solver(width, height, mines);
                             } else {
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Вы проиграли");
