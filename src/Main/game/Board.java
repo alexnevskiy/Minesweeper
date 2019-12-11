@@ -1,21 +1,14 @@
 package Main.game;
 
-import Main.game.exceptions.GameLoseException;
-import Main.game.exceptions.GameWinException;
-import javafx.geometry.Insets;
+import Main.solver.GameState;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static javafx.scene.paint.Color.*;
 
 public class Board {
     public Cell[][] board;
@@ -26,12 +19,14 @@ public class Board {
     public List<Cell> minesList = new ArrayList<>();
     public Map<Cell, Label> labels = new HashMap<>();
     public boolean endGame = false;
+    public GameState state;
 
     public Board(int width, int height, int mines) {
         this.width = width;
         this.height = height;
         this.emptyCells = width * height - mines;
         this.checkCells = 0;
+        this.state = GameState.launching;
         generateBoard(width, height, mines);
     }
 
@@ -243,8 +238,8 @@ public class Board {
         for (Cell[] row : board) {
             for (Cell cell : row) {
                 if (cell.isMine()) {
-                    Cell[] neighbours = cell.getNeighbours();
-                    for (Cell neighbour : neighbours) {
+                    Point[] neighbours = Point.getNeighbours(cell.getX(), cell.getY());
+                    for (Point neighbour : neighbours) {
                         Cell currentNeighbour;
                         if (neighbour.inRange(width, height)) {
                             currentNeighbour = board[neighbour.getY()][neighbour.getX()];
@@ -253,6 +248,16 @@ public class Board {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public void resetValues() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j].getValue() > 0) {
+                    board[i][j].setValue(0);
                 }
             }
         }
@@ -349,17 +354,37 @@ public class Board {
         }
     }
 
-    public void uncover(int x, int y) throws GameLoseException, GameWinException {
+    public void uncover(int x, int y) {
         if (!board[y][x].check) {
             board[y][x].check = true;
-            if (board[y][x].isMine()) {
+            if (board[y][x].isMine() && checkCells != 0) {
                 endGame = true;
-                throw new GameLoseException();
+                state = GameState.lose;
+                return;
+            } else if (board[y][x].isMine() && checkCells == 0) {
+                System.out.println("Перегенерировалось поле на клетке с координатами х: " + x + ", y: " + y);
+                board[y][x].removeMine();
+                minesList.remove(board[y][x]);
+                boolean isSetMine = false;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        if (!board[i][j].isMine() && (j != x || i != y)) {
+                            board[i][j].placeMine();
+                            minesList.add(board[i][j]);
+                            isSetMine = true;
+                            break;
+                        }
+                    }
+                    if (isSetMine) break;
+                }
+                resetValues();
+                updateValues();
+                uncover(x, y);
             } else {
                 checkCells++;
                 if (board[y][x].getValue() == 0){
-                    Cell[] neighbours = board[y][x].getNeighbours();
-                    for (Cell neighbour : neighbours) {
+                    Point[] neighbours = Point.getNeighbours(x, y);
+                    for (Point neighbour : neighbours) {
                         if (neighbour.inRange(width, height) &&
                                 !board[neighbour.getY()][neighbour.getX()].isMine() &&
                                 !board[neighbour.getY()][neighbour.getX()].check) {
@@ -371,7 +396,7 @@ public class Board {
         }
         if (checkCells == emptyCells) {
             endGame = true;
-            throw new GameWinException();
+            state = GameState.win;
         }
     }
 

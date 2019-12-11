@@ -2,8 +2,6 @@ package Main.solver;
 
 import Main.game.Board;
 import Main.game.Cell;
-import Main.game.exceptions.GameLoseException;
-import Main.game.exceptions.GameWinException;
 
 import java.util.List;
 
@@ -25,15 +23,16 @@ public class Solver {
         moveCounter = 0;
     }
 
-    public void stepPlay() throws GameLoseException, GameWinException {
+    public void stepPlay() {
         if (state == GameState.launching) {
             play();
         }
     }
 
-    public void play() throws GameLoseException, GameWinException {
+    public void play() {
         if (moveCounter == 0) {
             randomMove();
+            return;
         }
         Cell cell = bestMove();
         System.out.println("Сейчас решатель на координатах x: " + cell.getX() + ", y: " + cell.getY());
@@ -63,40 +62,12 @@ public class Solver {
         return cell;
     }
 
-    public boolean move(int x, int y) throws GameWinException, GameLoseException {
+    public boolean move(int x, int y) {
         if (board.board[y][x].check || board.board[y][x].isFlag()) {
             return false;
         }
         List<Cell> list;
-        try {
-            board.uncover(x, y);
-        } catch (GameLoseException e) {
-            if (moveCounter == 0) {
-                board.board[y][x].removeMine();
-                board.minesList.remove(board.board[y][x]);
-                boolean isSetMine = false;
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        if (!board.board[i][j].isMine() && (j != x || i != y)) {
-                            board.board[i][j].placeMine();
-                            board.minesList.add(board.board[i][j]);
-                            isSetMine = true;
-                            break;
-                        }
-                    }
-                    if (isSetMine) break;
-                }
-                board.updateValues();
-                board.uncover(x, y);
-                if (board.checkCells == board.emptyCells) {
-                    board.endGame = true;
-                    throw new GameWinException();
-                }
-            } else {
-                board.endGame = true;
-                throw new GameLoseException();
-            }
-        }
+        board.uncover(x, y);
         list = chanceBoard.createChanceBoard(board.getBoard());
         for (Cell cell : list) {
             board.board[cell.getY()][cell.getX()].placeFlag();
@@ -105,7 +76,7 @@ public class Solver {
         return true;
     }
 
-    public boolean randomMove() throws GameLoseException, GameWinException {
+    public boolean randomMove() {
         int x = (int) (Math.random() * width);
         int y = (int) (Math.random() * height);
         return move(x, y);

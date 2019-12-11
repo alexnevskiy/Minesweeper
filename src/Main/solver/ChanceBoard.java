@@ -1,6 +1,7 @@
 package Main.solver;
 
 import Main.game.Cell;
+import Main.game.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +48,10 @@ public class ChanceBoard {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 SolverCell cell = chanceBoard[i][j];
-                SolverCell[] neighbours = getNeighbours(j, i);
+                Point[] neighbours = Point.getNeighbours(j, i);
                 cell.resetSurrounding();
                 if (cell.getValue() != 0 && cell.isChecked()) {
-                    for (SolverCell neighbour : neighbours) {
+                    for (Point neighbour : neighbours) {
                         if (neighbour.inRange(width, height)) {
                             if (chanceBoard[neighbour.getY()][neighbour.getX()].isFlag()) {
                                 cell.flagsAround++;
@@ -70,9 +71,9 @@ public class ChanceBoard {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 SolverCell cell = chanceBoard[i][j];
-                SolverCell[] neighbours = getNeighbours(j, i);
+                Point[] neighbours = Point.getNeighbours(j, i);
                 if (cell.getValue() > 0 && cell.getValue() == cell.uncheckedNeighbours) {
-                    for (SolverCell neighbour : neighbours) {
+                    for (Point neighbour : neighbours) {
                         if (neighbour.inRange(width, height) && !chanceBoard[neighbour.getY()][neighbour.getX()].isChecked()) {
                             chanceBoard[neighbour.getY()][neighbour.getX()].setFlag();
                             list.add(new Cell(neighbour.getX(), neighbour.getY()));
@@ -89,9 +90,9 @@ public class ChanceBoard {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 SolverCell cell = chanceBoard[i][j];
-                SolverCell[] neighbours = getNeighbours(j, i);
+                Point[] neighbours = Point.getNeighbours(j, i);
                 if (cell.getValue() != 0 && cell.getValue() == cell.flagsAround) {
-                    for (SolverCell neighbour : neighbours) {
+                    for (Point neighbour : neighbours) {
                         if (neighbour.inRange(width, height) && !chanceBoard[neighbour.getY()][neighbour.getX()].isChecked() && !chanceBoard[neighbour.getY()][neighbour.getX()].isFlag()) {
                             chanceBoard[neighbour.getY()][neighbour.getX()].setNotMine();
                         }
@@ -106,9 +107,9 @@ public class ChanceBoard {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 SolverCell cell = chanceBoard[i][j];
-                SolverCell[] neighbours = getNeighbours(j, i);
+                Point[] neighbours = Point.getNeighbours(j, i);
                 if (cell.getValue() != 0 && cell.isChecked()) {
-                    for (SolverCell neighbour : neighbours) {
+                    for (Point neighbour : neighbours) {
                         if (neighbour.inRange(width, height) && !chanceBoard[neighbour.getY()][neighbour.getX()].isChecked()) {
                             double previousChance = chanceBoard[neighbour.getY()][neighbour.getX()].getChance();
                             double chance = previousChance + ((double) (cell.getValue() - cell.flagsAround)) / ((double) (cell.uncheckedNeighbours - cell.flagsAround));
@@ -118,18 +119,5 @@ public class ChanceBoard {
                 }
             }
         }
-    }
-
-    public SolverCell[] getNeighbours(int x, int y) {  //  Создаём массив из клеток, которые расположены
-        SolverCell[] surrounding = new SolverCell[8];  //  в таком порядке относительно ячейки на поле (по часовой стрелке):
-        surrounding[0] = new SolverCell(-1 + x, -1 + y, false);  //  Сверху слева
-        surrounding[1] = new SolverCell(-1 + x, y, false);  //  Сверху
-        surrounding[2] = new SolverCell(-1 + x, 1 + y, false);  //  Сверху справа
-        surrounding[3] = new SolverCell(x, 1 + y, false);  //  Справа
-        surrounding[4] = new SolverCell(1 + x, 1 + y, false);  //  Справа снизу
-        surrounding[5] = new SolverCell(1 + x, y, false);  //  Снизу
-        surrounding[6] = new SolverCell(1 + x, -1 + y, false);  //  Снизу слева
-        surrounding[7] = new SolverCell(x, -1 + y, false);  //  Слева
-        return surrounding;
     }
 }

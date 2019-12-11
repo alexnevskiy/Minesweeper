@@ -1,7 +1,5 @@
 package Main.solver;
 
-import Main.game.Cell;
-
 public class SolverCell {
     private int x;
     private int y;
@@ -65,25 +63,15 @@ public class SolverCell {
         return flag;
     }
 
-    public void plusFlagsAround() {
-        flagsAround++;
-    }
 
     public void resetSurrounding() {
         uncheckedNeighbours = 0;
         flagsAround = 0;
     }
 
-    public int getFlagsAround() {
-        return flagsAround;
-    }
 
     public void setNotMine() {
         notMineChance = 0.01;
         notMine = true;
-    }
-
-    public boolean inRange(int width, int height) {
-        return 0 <= x && x < width && 0 <= y && y < height;
     }
 }

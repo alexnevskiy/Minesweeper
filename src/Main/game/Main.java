@@ -15,8 +15,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 
 public class Main extends Application {
     Button playButton;  //  Кнопки в меню
