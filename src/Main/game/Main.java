@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -20,9 +17,10 @@ public class Main extends Application {
     Button playButton;  //  Кнопки в меню
     Button exitButton;
     Button restartButton;
-    Button menuButton;
-    Button endButton;
     Button returnButton;
+    static Button stepButton;
+    CheckBox solve;
+    CheckBox step;
 
     public static Stage window = new Stage();
 
@@ -79,11 +77,13 @@ public class Main extends Application {
 
         primaryStage.setTitle("Minesweeper");  //  Название окна
         playButton = new Button("Играть");  //  Название кнопок
+
         exitButton = new Button("Выход");
         restartButton = new Button("Начать заново");
-        menuButton = new Button("В главное меню");
-        endButton = new Button("Выйти в главное меню");
         returnButton = new Button("Выйти");
+        stepButton = new Button("Шаг");
+        solve = new CheckBox("Запустить решатель");
+        step = new CheckBox("Пошаговый решатель");
 
         TextField width = new TextField();
         width.setMaxWidth(125);
@@ -91,6 +91,8 @@ public class Main extends Application {
         height.setMaxWidth(125);
         TextField mines = new TextField();
         mines.setMaxWidth(125);
+        solve.setSelected(true);
+        step.setSelected(false);
 
         Label labelWidth = new Label("Введите ширину поля");
         Label labelHeight = new Label("Введите высоту поля");
@@ -98,24 +100,23 @@ public class Main extends Application {
 
         playButton.setStyle(buttonStyle);
         exitButton.setStyle(buttonStyle);
-        menuButton.setStyle(buttonStyle);
-        endButton.setStyle(buttonStyle);
         restartButton.setStyle(gameStyle);
         returnButton.setStyle(gameStyle);
+        stepButton.setStyle(gameStyle);
         width.setStyle(buttonStyle);
         height.setStyle(buttonStyle);
         mines.setStyle(buttonStyle);
         labelWidth.setStyle(labelStyle);
         labelHeight.setStyle(labelStyle);
         labelMines.setStyle(labelStyle);
+        solve.setStyle(labelStyle);
+        step.setStyle(labelStyle);
 
         primaryStage.setOnCloseRequest(e -> System.exit(0));  //  Закрывается окно при нажатии на крестик
 
         StackPane.setMargin(playButton, new Insets(0, 800, 300, 0));
         StackPane.setMargin(exitButton, new Insets(300, 800, 0, 0));
         StackPane.setMargin(restartButton, new Insets(0, 0, 150, 0));
-        StackPane.setMargin(menuButton, new Insets(0, 0, -150, 0));
-        StackPane.setMargin(endButton, new Insets(0, 0, 0, 0));
         StackPane.setMargin(returnButton, new Insets(0, -800, 300, 0));
         StackPane.setMargin(width, new Insets(0, -800, 350, 0));
         StackPane.setMargin(height, new Insets(0, -800, 0, 0));
@@ -123,14 +124,14 @@ public class Main extends Application {
         StackPane.setMargin(labelWidth, new Insets(0, -800, 500, 0));
         StackPane.setMargin(labelHeight, new Insets(0, -800, 150, 0));
         StackPane.setMargin(labelMines, new Insets(200, -800, 0, 0));
+        StackPane.setMargin(solve, new Insets(0, 300, 350, 0));
+        StackPane.setMargin(step, new Insets(0, 275, 250, 0));
 
         Image background = new Image(new FileInputStream("./images/BackgroundMenu.jpg"), 1280.0, 720.0, true, true);
-        Image backgroundGame = new Image(new FileInputStream("./images/BackgroundGame.jpg"));
         ImageView backgroundMenu = new ImageView(background);
-        ImageView backgroundGameView = new ImageView(backgroundGame);
 
         StackPane layout = new StackPane(backgroundMenu, playButton, exitButton, width, height, mines,
-                labelWidth, labelHeight, labelMines);
+                labelWidth, labelHeight, labelMines, solve, step);
         mainScene = new Scene(layout, 1280, 720);
         primaryStage.setScene(mainScene);
         primaryStage.show();
@@ -149,9 +150,17 @@ public class Main extends Application {
                 returnButton.setLayoutY(heightNumber * 30);
                 restartButton.setLayoutX(widthNumber * 30 - 102);
                 restartButton.setLayoutY(heightNumber * 30);
-                gameLayout = new Pane(returnButton, restartButton);
+                stepButton.setLayoutX(widthNumber * 30 / 2 - 20);
+                stepButton.setLayoutY(heightNumber * 30);
+                if (step.isSelected()) {
+                    gameLayout = new Pane(returnButton, restartButton, stepButton);
+                } else {
+                    gameLayout = new Pane(returnButton, restartButton);
+                }
                 window.setScene(gameScene = new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
                 Game game = new Game();
+                game.solve = solve.isSelected();
+                game.step = step.isSelected();
                 game.start(widthNumber, heightNumber, minesNumber);
             }
         });
@@ -165,13 +174,19 @@ public class Main extends Application {
             returnButton.setLayoutY(heightNumber * 30);
             restartButton.setLayoutX(widthNumber * 30 - 102);
             restartButton.setLayoutY(heightNumber * 30);
-            gameLayout = new Pane(returnButton, restartButton);
+            stepButton.setLayoutX(widthNumber * 30 / 2 - 20);
+            stepButton.setLayoutY(heightNumber * 30);
+            if (step.isSelected()) {
+                gameLayout = new Pane(returnButton, restartButton, stepButton);
+            } else {
+                gameLayout = new Pane(returnButton, restartButton);
+            }
             window.setScene(gameScene = new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
             Game game = new Game();
+            game.solve = solve.isSelected();
+            game.step = step.isSelected();
             game.start(widthNumber, heightNumber, minesNumber);
         });
-        menuButton.setOnAction(e -> window.setScene(mainScene));
-        endButton.setOnAction(e -> window.setScene(mainScene));
         returnButton.setOnAction(e -> window.setScene(mainScene));
     }
 }

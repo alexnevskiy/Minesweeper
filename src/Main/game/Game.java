@@ -14,7 +14,8 @@ public class Game {
 
     private static Board board;
     private Solver solver;
-    public boolean solve = true;
+    public boolean solve;
+    public boolean step;
     AnimationTimer timer;
 
     public static void create(Pane pane, int width, int height, int mines) {
@@ -32,39 +33,58 @@ public class Game {
             @Override
             public void handle(long now) {
                 if (solve) {
-                    if (!solver.board.endGame) {
-                        solver.play();
-                        if (solver.board.state == GameState.lose) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Вы проиграли");
-                            alert.setHeaderText("Вы попались на мину");
-                            alert.show();
-                        } else if (solver.board.state == GameState.win){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Вы выиграли");
-                            alert.setHeaderText("Поздравляем, вы нашли все мины!");
-                            alert.show();
+                    if (step) {
+                        Main.stepButton.setOnAction(e -> {
+                            if (!solver.board.endGame) {
+                                solver.play();
+                                if (solver.board.state == GameState.lose) {
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Вы проиграли");
+                                    alert.setHeaderText("Вы попались на мину");
+                                    alert.show();
+                                } else if (solver.board.state == GameState.win){
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Вы выиграли");
+                                    alert.setHeaderText("Поздравляем, вы нашли все мины!");
+                                    alert.show();
+                                }
+                                solver.board.createBoard(Main.gameLayout);
+                            }
+                        });
+                    } else {
+                        if (!solver.board.endGame) {
+                            solver.play();
+                            if (solver.board.state == GameState.lose) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Вы проиграли");
+                                alert.setHeaderText("Вы попались на мину");
+                                alert.show();
+                            } else if (solver.board.state == GameState.win){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Вы выиграли");
+                                alert.setHeaderText("Поздравляем, вы нашли все мины!");
+                                alert.show();
+                            }
+                            solver.board.createBoard(Main.gameLayout);
                         }
-                        solver.board.createBoard(Main.gameLayout);
                     }
                 } else {
                     for (Map.Entry<Cell, Label> entry: board.labels.entrySet()) {
                         if (!board.endGame) {
                             entry.getValue().setOnMouseClicked(event -> {
                                 if (event.getButton() == MouseButton.PRIMARY) {
-//                                    try {
-//                                        board.uncover(entry.getKey().getX(), entry.getKey().getY());
-//                                    } catch (GameLoseException e) {
-//                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                                        alert.setTitle("Вы проиграли");
-//                                        alert.setHeaderText("Вы попались на мину");
-//                                        alert.showAndWait();
-//                                    } catch (GameWinException e) {
-//                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                                        alert.setTitle("Вы выиграли");
-//                                        alert.setHeaderText("Поздравляем, вы нашли все мины!");
-//                                        alert.showAndWait();
-//                                    }
+                                    board.uncover(entry.getKey().getX(), entry.getKey().getY());
+                                    if (board.state == GameState.lose) {
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Вы проиграли");
+                                        alert.setHeaderText("Вы попались на мину");
+                                        alert.show();
+                                    } else if (board.state == GameState.win){
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Вы выиграли");
+                                        alert.setHeaderText("Поздравляем, вы нашли все мины!");
+                                        alert.show();
+                                    }
                                 }
                                 if (event.getButton() == MouseButton.SECONDARY &&
                                         !board.board[entry.getKey().getY()][entry.getKey().getX()].check) {
