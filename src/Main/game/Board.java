@@ -21,6 +21,19 @@ public class Board {
     public boolean endGame = false;
     public GameState state;
 
+    String numberStyle = "-fx-background-color: white; -fx-border-color: black;" +
+            " -fx-font-size: 1.5em; -fx-font-weight: bold;";
+
+    String emptyStyle = "-fx-background-color: white; -fx-border-color: black;";
+
+    String flagStyle = "-fx-background-color: blue; -fx-border-color: black;";
+
+    String uncheckedStyle = "-fx-background-color: gray; -fx-border-color: black;";
+
+    String flagWithMineStyle = "-fx-background-color: purple; -fx-border-color: black;";
+
+    String mineStyle = "-fx-background-color: red; -fx-border-color: black;";
+
     public Board(int width, int height, int mines) {
         this.width = width;
         this.height = height;
@@ -89,62 +102,54 @@ public class Board {
                     int value = board[i][j].getValue();
                     switch (value) {
                         case 0:
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black;");
+                            label.setStyle(emptyStyle);
                             break;
                         case 1:
                             label.setText("1");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: blue;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: blue");
                             break;
                         case 2:
                             label.setText("2");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: green;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: green");
                             break;
                         case 3:
                             label.setText("3");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: red;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: red");
                             break;
                         case 4:
                             label.setText("4");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: navy;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: navy");
                             break;
                         case 5:
                             label.setText("5");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: maroon;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: maroon");
                             break;
                         case 6:
                             label.setText("6");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: aqua;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: aqua");
                             break;
                         case 7:
                             label.setText("7");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: fuchsia;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: fuchsia");
                             break;
                         case 8:
                             label.setText("8");
                             label.setAlignment(Pos.CENTER);
-                            label.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-text-fill: black;" +
-                                    " -fx-font-size: 1.5em; -fx-font-weight: bold;");
+                            label.setStyle(numberStyle + "-fx-text-fill: black");
                             break;
                     }
                 } else {
                     if (board[i][j].isFlag()) {
-                        label.setStyle("-fx-background-color: blue; -fx-border-color: black;");
+                        label.setStyle(flagStyle);
                     } else {
-                        label.setStyle("-fx-background-color: gray; -fx-border-color: black;");
+                        label.setStyle(uncheckedStyle);
                     }
                 }
                 label.setMinHeight(30);
@@ -159,9 +164,9 @@ public class Board {
             for (Cell mine : minesList) {
                 Label label = new Label();
                 if (mine.isFlag()) {
-                    label.setStyle("-fx-background-color: purple; -fx-border-color: black;");
+                    label.setStyle(flagWithMineStyle);
                 } else {
-                    label.setStyle("-fx-background-color: red; -fx-border-color: black;");
+                    label.setStyle(mineStyle);
                 }
                 label.setMinHeight(30);
                 label.setMinWidth(30);

@@ -23,12 +23,6 @@ public class Solver {
         moveCounter = 0;
     }
 
-    public void stepPlay() {
-        if (state == GameState.launching) {
-            play();
-        }
-    }
-
     public void play() {
         if (moveCounter == 0) {
             randomMove();
