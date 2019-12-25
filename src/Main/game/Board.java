@@ -1,6 +1,5 @@
 package Main.game;
 
-import Main.solver.GameState;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;

@@ -1,6 +1,5 @@
 package Main.game;
 
-import Main.solver.GameState;
 import Main.solver.Solver;
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Alert;

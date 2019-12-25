@@ -1,4 +1,4 @@
-package Main.solver;
+package Main.game;
 
 public enum GameState {
     launching,
