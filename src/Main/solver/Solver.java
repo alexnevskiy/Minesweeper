@@ -54,7 +54,7 @@ public class Solver {
         return cell;
     }
 
-    public boolean move(int x, int y) {
+    private boolean move(int x, int y) {
         if (board.board[y][x].check || board.board[y][x].isFlag()) {
             return false;
         }
@@ -68,7 +68,7 @@ public class Solver {
         return true;
     }
 
-    public boolean randomMove() {
+    private boolean randomMove() {
         int x = (int) (Math.random() * width);
         int y = (int) (Math.random() * height);
         return move(x, y);
