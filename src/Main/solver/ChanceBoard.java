@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChanceBoard {
-    public SolverCell[][] chanceBoard;
-    int width;
-    int height;
+    SolverCell[][] chanceBoard;
+    private int width;
+    private int height;
 
-    public ChanceBoard(int[][] board) {
+    ChanceBoard(int[][] board) {
         height = board.length;
         width = board[0].length;
         createChanceBoard(board);
     }
 
-    public List<Cell> createChanceBoard(int[][] board) {
+    List<Cell> createChanceBoard(int[][] board) {
         SolverCell[][] result = new SolverCell[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -35,7 +35,7 @@ public class ChanceBoard {
         return updateChances();
     }
 
-    public List<Cell> updateChances() {
+    private List<Cell> updateChances() {
         List<Cell> list;
         updateSolverCells();
         list = setFlags();

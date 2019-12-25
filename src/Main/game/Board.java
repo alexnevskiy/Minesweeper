@@ -12,27 +12,27 @@ import java.util.Map;
 
 public class Board {
     public Cell[][] board;
-    public int width;
-    public int height;
-    public int emptyCells;
-    public int checkCells;
-    public List<Cell> minesList = new ArrayList<>();
-    public Map<Cell, Label> labels = new HashMap<>();
-    public boolean endGame = false;
-    public GameState state;
+    private int width;
+    private int height;
+    private int emptyCells;
+    private int checkCells;
+    private List<Cell> minesList = new ArrayList<>();
+    Map<Cell, Label> labels = new HashMap<>();
+    boolean endGame = false;
+    GameState state;
 
-    String numberStyle = "-fx-background-color: white; -fx-border-color: black;" +
+    private String numberStyle = "-fx-background-color: white; -fx-border-color: black;" +
             " -fx-font-size: 1.5em; -fx-font-weight: bold;";
 
-    String emptyStyle = "-fx-background-color: white; -fx-border-color: black;";
+    private String emptyStyle = "-fx-background-color: white; -fx-border-color: black;";
 
-    String flagStyle = "-fx-background-color: blue; -fx-border-color: black;";
+    private String flagStyle = "-fx-background-color: blue; -fx-border-color: black;";
 
-    String uncheckedStyle = "-fx-background-color: gray; -fx-border-color: black;";
+    private String uncheckedStyle = "-fx-background-color: gray; -fx-border-color: black;";
 
-    String flagWithMineStyle = "-fx-background-color: purple; -fx-border-color: black;";
+    private String flagWithMineStyle = "-fx-background-color: purple; -fx-border-color: black;";
 
-    String mineStyle = "-fx-background-color: red; -fx-border-color: black;";
+    private String mineStyle = "-fx-background-color: red; -fx-border-color: black;";
 
     public Board(int width, int height, int mines) {
         this.width = width;
@@ -65,7 +65,7 @@ public class Board {
         updateValues();
     }
 
-    public void updateValues() {
+    private void updateValues() {
         for (Cell[] row : board) {
             for (Cell cell : row) {
                 if (cell.isMine()) {
@@ -84,7 +84,7 @@ public class Board {
         }
     }
 
-    public void resetValues() {
+    private void resetValues() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j].getValue() > 0) {
@@ -94,7 +94,7 @@ public class Board {
         }
     }
 
-    public void createBoard(Pane pane) {
+    void createBoard(Pane pane) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Label label = new Label();

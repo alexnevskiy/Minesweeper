@@ -10,20 +10,20 @@ import javafx.scene.layout.Pane;
 
 import java.util.Map;
 
-public class Game {
+class Game {
 
     private static Board board;
     private Solver solver;
-    public boolean solve;
-    public boolean step;
-    AnimationTimer timer;
+    boolean solve;
+    boolean step;
+    private AnimationTimer timer;
 
-    public static void create(Pane pane, int width, int height, int mines) {
+    private static void create(Pane pane, int width, int height, int mines) {
         board = new Board(width, height, mines);
         board.createBoard(pane);
     }
 
-    public void start(int width, int height, int mines){
+    void start(int width, int height, int mines){
         create(Main.gameLayout, width, height, mines);
         solver = new Solver(width, height, mines);
         System.out.println();
@@ -72,7 +72,8 @@ public class Game {
                     for (Map.Entry<Cell, Label> entry: board.labels.entrySet()) {
                         if (!board.endGame) {
                             entry.getValue().setOnMouseClicked(event -> {
-                                if (event.getButton() == MouseButton.PRIMARY) {
+                                if (event.getButton() == MouseButton.PRIMARY &&
+                                        !board.board[entry.getKey().getY()][entry.getKey().getX()].isFlag()) {
                                     board.uncover(entry.getKey().getX(), entry.getKey().getY());
                                     if (board.state == GameState.lose) {
                                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -88,7 +89,11 @@ public class Game {
                                 }
                                 if (event.getButton() == MouseButton.SECONDARY &&
                                         !board.board[entry.getKey().getY()][entry.getKey().getX()].check) {
-                                    board.board[entry.getKey().getY()][entry.getKey().getX()].placeFlag();
+                                    if (board.board[entry.getKey().getY()][entry.getKey().getX()].isFlag()) {
+                                        board.board[entry.getKey().getY()][entry.getKey().getX()].removeFlag();
+                                    } else {
+                                        board.board[entry.getKey().getY()][entry.getKey().getX()].placeFlag();
+                                    }
                                 }
                                 board.createBoard(Main.gameLayout);
                             });

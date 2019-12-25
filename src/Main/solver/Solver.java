@@ -7,19 +7,17 @@ import java.util.List;
 
 public class Solver {
     public Board board;
-    public int width;
-    public int height;
-    public int moveCounter;
+    private int width;
+    private int height;
+    private int moveCounter;
     private int failedMove;
-    public GameState state;
-    public ChanceBoard chanceBoard;
+    private ChanceBoard chanceBoard;
 
     public Solver(int width, int height, int mines) {
         this.width = width;
         this.height = height;
         board = new Board(width, height, mines);
         chanceBoard = new ChanceBoard(board.getBoard());
-        state = GameState.launching;
         moveCounter = 0;
     }
 

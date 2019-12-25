@@ -14,23 +14,22 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 
 public class Main extends Application {
-    Button playButton;  //  Кнопки в меню
-    Button exitButton;
-    Button restartButton;
-    Button returnButton;
+    private Button playButton;  //  Кнопки в меню
+    private Button exitButton;
+    private Button restartButton;
+    private Button returnButton;
     static Button stepButton;
-    CheckBox solve;
-    CheckBox step;
+    private CheckBox solve;
+    private CheckBox step;
 
-    public static Stage window = new Stage();
+    private static Stage window = new Stage();
 
-    public static Pane gameLayout;
-    public static Scene gameScene;
-    public static Scene mainScene;
+    static Pane gameLayout;
+    private static Scene mainScene;
 
     //private Pane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-    String buttonStyle = "-fx-padding: 8 15 15 15;\n" +
+    private String buttonStyle = "-fx-padding: 8 15 15 15;\n" +
             "    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;\n" +
             "    -fx-background-radius: 8;\n" +
             "    -fx-background-color: \n" +
@@ -43,7 +42,7 @@ public class Main extends Application {
             "    -fx-text-fill: #395306;" +
             "    -fx-font-size: 4.0em;";
 
-    String labelStyle = "    -fx-background-radius: 8;\n" +
+    private String labelStyle = "    -fx-background-radius: 8;\n" +
             "    -fx-background-color: \n" +
             "        linear-gradient(from 0% 93% to 0% 100%, #000099 0%, #000099 100%),\n" +
             "        #000099,\n" +
@@ -53,7 +52,7 @@ public class Main extends Application {
             "    -fx-text-fill: #ffffff;" +
             "    -fx-font-size: 2.0em;";
 
-    String gameStyle = "    -fx-background-radius: 8;\n" +
+    private String gameStyle = "    -fx-background-radius: 8;\n" +
             "    -fx-background-color: \n" +
             "        linear-gradient(from 0% 93% to 0% 100%, #000099 0%, #000099 100%),\n" +
             "        #000099,\n" +
@@ -157,7 +156,7 @@ public class Main extends Application {
                 } else {
                     gameLayout = new Pane(returnButton, restartButton);
                 }
-                window.setScene(gameScene = new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
+                window.setScene(new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
                 Game game = new Game();
                 game.solve = solve.isSelected();
                 game.step = step.isSelected();
@@ -181,7 +180,7 @@ public class Main extends Application {
             } else {
                 gameLayout = new Pane(returnButton, restartButton);
             }
-            window.setScene(gameScene = new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
+            window.setScene(new Scene(gameLayout, widthNumber * 30, heightNumber * 30 + 25));
             Game game = new Game();
             game.solve = solve.isSelected();
             game.step = step.isSelected();

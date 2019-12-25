@@ -1,23 +1,22 @@
 package Main.solver;
 
-public class SolverCell {
+class SolverCell {
     private int x;
     private int y;
     private int value;
-    public int uncheckedNeighbours;
-    public int flagsAround;
-    public double chance;
-    public double notMineChance;
-    public boolean notMine;
+    int uncheckedNeighbours;
+    int flagsAround;
+    private double chance;
+    private double notMineChance;
+    private boolean notMine;
     private boolean flag = false;
-    public boolean check;
+    private boolean check;
 
-    public SolverCell(int x, int y, boolean check) {
+    SolverCell(int x, int y, boolean check) {
         this.x = x;
         this.y = y;
         this.check = check;
         value = 0;
-        //neighbours = 0;
         uncheckedNeighbours = 0;
         flagsAround = 0;
         chance = 0;
@@ -25,52 +24,52 @@ public class SolverCell {
         notMine = false;
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
-    public int getY() {
+    int getY() {
         return y;
     }
 
-    public void setValue(int val) {
+    void setValue(int val) {
         value = val;
     }
 
-    public int getValue() {
+    int getValue() {
         return value;
     }
 
-    public void setChance(double chan) {
+    void setChance(double chan) {
         chance = chan;
     }
 
-    public double getChance() {
+    double getChance() {
         if (notMine) return notMineChance;
         return chance;
     }
 
-    public boolean isChecked() {
+    boolean isChecked() {
         return check;
     }
 
-    public void setFlag() {
+    void setFlag() {
         chance = 100;
         flag = true;
     }
 
-    public boolean isFlag() {
+    boolean isFlag() {
         return flag;
     }
 
 
-    public void resetSurrounding() {
+    void resetSurrounding() {
         uncheckedNeighbours = 0;
         flagsAround = 0;
     }
 
 
-    public void setNotMine() {
+    void setNotMine() {
         notMineChance = 0.01;
         notMine = true;
     }

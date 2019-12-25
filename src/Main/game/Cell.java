@@ -11,16 +11,16 @@ public class Cell {
         point = new Point(x, y);
     }
 
-    public boolean isMine() {
+    boolean isMine() {
         return mine;
     }
 
-    public void placeMine() {
+    void placeMine() {
         mine = true;
         value = -1;
     }
 
-    public void removeMine() {
+    void removeMine() {
         mine = false;
         value = 0;
         check = false;
@@ -34,11 +34,15 @@ public class Cell {
         flag = true;
     }
 
-    public void setValue(int val) {
+    void removeFlag() {
+        flag = false;
+    }
+
+    void setValue(int val) {
         value = val;
     }
 
-    public int getValue() {
+    int getValue() {
         return value;
     }
 
